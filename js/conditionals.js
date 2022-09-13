@@ -59,7 +59,7 @@
      * Pass the `randomColor` variable to your 'analyzeColor' function and console.log the results.
      * You should see a different message every time you refresh the page
      */
-    console.log(analyzeColor(randomColor));
+    //console.log(analyzeColor(randomColor));
 
     /**
      * TODO:
@@ -141,12 +141,12 @@
             return "Congratulations you received a 50 percent discount and your total is now $" + (amount - amount * .50).toFixed(2);
         }else if (num === 5){
             return "Congratulations you received a 100 percent discount and your total is now $" + 0;
-        }else{
-            return "Your lucky number needs to be between 0-5."
+        //}else{
+            //return "Your lucky number needs to be between 0-5."
         }
     }
 
-    console.log(calculateTotal(6,100));
+    //console.log(calculateTotal(6,100));
 
     /**
      * TODO:
