@@ -6,10 +6,10 @@
         x = x * 2
     }
 
-    // do while loop
+    // do while loop exercise
     // generate a random number between 50 and 100 to represent how many cones to sell before loop
     // inside loop generate between 1 and 5 for how many each customer buys
-    //
+
     let allCones = Math.floor(Math.random() * 50) + 50;
 
 
