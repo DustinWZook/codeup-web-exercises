@@ -54,18 +54,21 @@
      */
 
     function firstItem(array){
-        console.log(array[0]);
+        return array[0];
     }
-    firstItem(names);
+
+    console.log(firstItem(names));
 
     function secondItem(array){
-        console.log(array[1])
+        return array[1];
     }
-    secondItem(names);
+
+    console.log(secondItem(names));
 
     function lastItem(array){
-        console.log(array[array.length -1]);
+        return array[array.length -1];
     }
-    lastItem(names);
+
+    console.log(lastItem(names));
 
 })();
