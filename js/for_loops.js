@@ -3,7 +3,7 @@
     console.log("sanity check");
 
     function showMultiplicationTable(input){
-        for (let i = 0; i < 11; i++){
+        for (let i = 1; i < 11; i++){
             let result = input * i;
             console.log(input + " x " + i + " = " + result)
         }
@@ -13,7 +13,7 @@
 
 
     for(let i = 0; i < 10; i++){
-        let randomNum = Math.floor(Math.random() * (200 - 20 +1)+ 20);
+        let randomNum = Math.floor(Math.random() * (200 - 20)+ 20);
         if(randomNum % 2 === 0){
             console.log(randomNum + " is even");
         }else {
@@ -36,6 +36,10 @@
     for (let i = 100; i >= 5; i -= 5){
         console.log(i);
     }
+
+    // TODO: practice using .repeat to create the pyramid!
+    //console.log(i.toString().repeat(i));
+    // ^ method is less confusing!
 
 
 
