@@ -83,6 +83,48 @@
      * > console.log(books[0].author.firstName) // "Douglas"
      * > console.log(books[0].author.lastName) // "Adams"
      */
+    let books = [
+        {
+            title: "The Salmon of Doubt",
+            author: {
+                firstName: "Douglas",
+                lastName: "Adams"
+            }
+        },
+        {
+            title: "Throne of Glass",
+            author: {
+                firstName: "Sarah J.",
+                lastName: "Mass"
+            }
+        },
+        {
+            title: "Jurassic Park",
+            author: {
+                firstName: "Michael",
+                lastName: "Crichton"
+            }
+        },
+        {
+            title: "The Lost World",
+            author: {
+                firstName: "Michael",
+                lastName: "Crichton"
+            }
+        },
+        {
+            title: "The Lord of the Rings",
+            author: {
+                firstName: "J. R. R.",
+                lastName: "Tolkien"
+            }
+        }
+    ]
+
+    console.log(books[3].title);
+    console.log(books[4].author.lastName);
+    console.log(books[0].author.lastName);
+    console.log(books[2].author.firstName, books[3].author.lastName);
 
     /**
      * TODO:
@@ -108,6 +150,12 @@
      *      ---
      *      ...
      */
+
+    for (let i = 0 ; i < books.length; i++){
+        console.log("Book # " + (i + 1));
+        console.log(books[i].title);
+        console.log(books[i].author.firstName + " "+ books[i].author.lastName);
+    }
 
     /**
      * Bonus:
