@@ -151,11 +151,11 @@
      *      ...
      */
 
-    for (let i = 0 ; i < books.length; i++){
-        console.log("Book # " + (i + 1));
-        console.log(books[i].title);
-        console.log(books[i].author.firstName + " "+ books[i].author.lastName);
-    }
+    // for (let i = 0 ; i < books.length; i++){
+    //     console.log("Book # " + (i + 1));
+    //     console.log(books[i].title);
+    //     console.log(books[i].author.firstName + " "+ books[i].author.lastName);
+    // }
 
     /**
      * Bonus:
@@ -167,5 +167,23 @@
      *   outputs the information described above. Refactor your loop to use your
      *   `showBookInfo` function.
      */
+
+    function createBook(title, first, last){
+        return books.push({title: title, author: {firstName: first, lastName: last}});
+    }
+    createBook("Fire & Ice", "George", "Martin");
+    createBook("A Knight of the Seven Kingdoms", "George", "Martin");
+    console.log(books);
+
+
+    function showBookInfo(input){
+        for (let i = 0 ; i < input.length; i++){
+            console.log("Book # " + (i + 1));
+            console.log(input[i].title);
+            console.log(input[i].author.firstName + " "+ input[i].author.lastName);
+        }
+    }
+    showBookInfo(books);
+
 
 })();
