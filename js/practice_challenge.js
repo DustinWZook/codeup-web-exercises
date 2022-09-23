@@ -36,3 +36,34 @@ function shuffleArray(input){
 let num = [1,2,3,4,5,6,7,8,9];
 
 shuffleArray(num);
+
+function lowToHigh(input){
+    console.log(input.sort(function (a, b){return a - b}));
+}
+let num2 = [3,6,3,2,6,8,9,6,4,3]
+lowToHigh(num2);
+
+let library = [
+    {
+        author: 'Bill Gates',
+        title: 'The Road Ahead',
+        readingStatus: true
+    },
+    {
+        author: 'Steve Jobs',
+        title: 'Walter Isaacson',
+        readingStatus: true
+    },
+    {
+        author: 'Suzanne Collins',
+        title:  'Mockingjay: The Final Book of The Hunger Games',
+        readingStatus: false
+    }];
+
+function readStatus(input){
+    for (let i = 0; i < input.length; i++){
+        console.log(input[i].title + " by " + input[i].author + " have finished reading: " + input[i].readingStatus)
+    }
+}
+
+readStatus(library);
