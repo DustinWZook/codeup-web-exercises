@@ -67,3 +67,23 @@ function readStatus(input){
 }
 
 readStatus(library);
+let arrayNum = [1,2,3,4,5,6,7,8];
+let arrayEven = [];
+// function evenArray(input){
+//     input.forEach(function(element){
+//         if (element % 2 === 0){
+//             arrayEven.push(element);
+//         }
+//     })
+// }
+
+function evenArray(input){
+    arrayEven = input.filter(number => {
+        return number % 2 === 0;
+        })
+
+}
+
+evenArray(arrayNum)
+console.log(arrayEven);
+
