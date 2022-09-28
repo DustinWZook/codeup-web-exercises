@@ -1,0 +1,25 @@
+/** {*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+.box {
+
+    border: 1px solid red;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+
+}
+
+/*.margin-padding {*/
+/*    margin: 20px;*/
+/*    padding: 20px;*/
+/*}*/
+
+/*#boxTwo {*/
+/*    margin-top: 60px;*/
+/*}*/
+
+/*#boxOne {*/
+/*    margin-left: 50px;*/
+/*}*/
