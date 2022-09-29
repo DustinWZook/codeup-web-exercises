@@ -87,3 +87,13 @@ function evenArray(input){
 evenArray(arrayNum)
 console.log(arrayEven);
 
+
+function arrayObjectAdd(input, string){
+    input[0].continent = string;
+    input[1].continent = string;
+    console.log(input)
+}
+
+let places = [{city: 'Tokyo', country: 'Japan'}, {city: 'Bangkok', country: 'Thailand'}];
+
+arrayObjectAdd(places, 'Asia');
