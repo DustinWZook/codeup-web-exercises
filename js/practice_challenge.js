@@ -97,3 +97,12 @@ function arrayObjectAdd(input, string){
 let places = [{city: 'Tokyo', country: 'Japan'}, {city: 'Bangkok', country: 'Thailand'}];
 
 arrayObjectAdd(places, 'Asia');
+
+
+for (let i = 20; i >= 0; i--){
+        console.log(i)
+}
+
+let fruit = ['mango', 'blueberries', 'oranges', 'banana', 'papaya', 'kiwi'];
+
+console.log(fruit.push('strawberry'),fruit.unshift('strawberry'), fruit.splice(4,0, 'strawberry'), fruit);
