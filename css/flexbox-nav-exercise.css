@@ -4,8 +4,14 @@
 body {
     margin: 0;
 }
+header {
+
+}
 nav {
     background: gray;
+}
+li {
+    align-self: center;
 }
 ul {
     list-style: none;
@@ -28,6 +34,7 @@ nav ul li:nth-child(5) {
     margin: auto;
     font-family: 'Work Sans', sans-serif;
     font-size: 3em;
-    padding: .2em 0;
+    padding-top: .2em;
+    padding-bottom: .2em;
 
 }
