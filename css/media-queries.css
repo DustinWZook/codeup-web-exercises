@@ -12,7 +12,6 @@
     text-decoration: none;
     color: black;
 }
-
 h1 {
     text-align: center;
 }
@@ -32,17 +31,13 @@ li {
     align-items: center;
     justify-content: center;
 }
-
 .header-img {
     text-align: center;
-
 }
 img {
     width: 100%;
     height: 100%;
-    /*object-fit: none;*/
 }
-
 .main, .sub-section {
     margin-bottom: 40px;
 }
@@ -58,9 +53,6 @@ footer{
 }
 
 @media screen and (min-width: 1024px){
-    body{
-        /*margin: 0 50px*/
-    }
     .alert-info{
         display: none;
     }
@@ -76,20 +68,16 @@ footer{
         justify-content: flex-end;
         align-content: flex-end;
     }
-
     li {
         background-color: white;
         padding: 15px;
         justify-items: flex-end;
         align-content: flex-end;
     }
-
     img {
         max-width: unset;
         max-height: unset;
-
     }
-
     .main{
         float: left;
         width: 60%;
@@ -99,6 +87,4 @@ footer{
         max-width: calc(40% - 10px);
         float: left;
     }
-
-
 }
