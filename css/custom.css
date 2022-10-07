@@ -1,5 +1,7 @@
 .custom-jumbotron {
-    background-image: url("https://java.codeup.com/examples/bootstrap/pizza.png");
+    background-image: url("../img/pizza.png");
     height: 346px;
     background-size: cover;
+    margin-top: 0;
+    /*text-align: center;*/
 }

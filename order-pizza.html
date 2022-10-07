@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Pizza World</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/custom.css">
@@ -33,10 +34,111 @@
 			</div>
 		</div>
 	</nav>
+	<div class="container d-none d-md-block">
+		<div class=" custom-jumbotron d-flex justify-content-center align-items-center">
+			<div class="bg-light text-center  text-dark bg-opacity-50 w-100">
+				<h2 class="mx-auto">Welcome to Pizza World!</h2>
+			</div>
+		</div>
+	</div>
 	<div class="container">
-		<div class="mt-4 p-5 bg-primary text-white custom-jumbotron">
-			<h1>Jumbotron Example</h1>
-			<p>Lorem ipsum...</p>
+		<h2 class="mt-5">Build your own pizza!</h2>
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" aria-current="page" href="#tab1" data-bs-toggle="tab"><span class="m-1 badge rounded-pill bg-secondary">1</span>Size and Crust</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="cheese" data-bs-toggle="tab" data-bs-target="#cheese" href="#tab2"><span class="m-1 badge rounded-pill bg-secondary">2</span>Cheese and Sauce</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" data-bs-toggle="tab" href="#tab3"><span class="m-1 badge rounded-pill bg-secondary">3</span>Toppings</a>
+			</li>
+		</ul>
+		<div class="container p-0 mb-3 border border-2 border-light">
+			<div class="tab-content ">
+				<div id="tab1" role="tabpanel" class="tab-pane fade show active">
+					<h6 class="bg-primary w-100% p-2 text-white">Choose size and crust</h6>
+					<div class="container mb-4">
+						<ul class="list-group">
+							<li class="list-group-item bg-light">
+								Hand Tossed
+							</li>
+							<li class="list-group-item">Garlic seasoned crust with a rich, buttery taste</li>
+							<li class="list-group-item">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+									<label class="form-check-label" for="flexRadioDefault1">
+										Small (10&#34;)
+									</label>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+									<label class="form-check-label" for="flexRadioDefault2">
+										Medium (12&#34;)
+									</label>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="container mb-3">
+						<ul class="list-group">
+							<li class="list-group-item bg-light">
+								Crispy Thin
+							</li>
+							<li class="list-group-item">Thin enough for optimum crispy to crunchy ratio.</li>
+							<li class="list-group-item">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+									<label class="form-check-label" for="flexRadioDefault3">
+										Medium (12&#34;)
+									</label>
+								</div>
+							</li>
+							
+							<li class="list-group-item">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
+									<label class="form-check-label" for="flexRadioDefault4">
+										Large (14&#34;)
+									</label>
+								</div>
+							</li>
+						</ul>
+						
+					</div>
+					<div class="container bg-light d-md-flex justify-content-md-end">
+						<button type="button" class="btn btn-primary" data-bs-toggle="tab" data-bs-target="#tab2" role="tab" aria-controls="profile" aria-selected="false">Next Step ></button>
+					</div>
+				</div>
+				<div id="tab2" role="tabpanel" aria-labelledby="cheese" class="tab-pane fade">
+					<h6 class="bg-primary p-2 text-white">Choose Cheese and Sauce</h6>
+					<div class="container bg-light">
+						button
+					</div>
+				</div>
+				<div id="tab3" role="tabpanel" class="tab-pane fade">
+					<h6 class="bg-primary p-2 text-white">Choose Toppings</h6>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+						<label class="form-check-label" for="flexCheckDefault">
+							Default checkbox
+						</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+						<label class="form-check-label" for="flexCheckChecked">
+							Checked checkbox
+						</label>
+					</div>
+					<div class="container bg-light">
+						button
+					</div>
+				</div>
+				
+			</div>
+			
 		</div>
 	</div>
 	
