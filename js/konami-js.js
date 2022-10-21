@@ -24,6 +24,9 @@ $(document).keydown(function(e){
         }
     }else{
         enteredCodePosition = 0;
+        $('#evil-laugh').prepend('<audio id="sound"><source src="audio/laugh.wav" type="audio/mpeg"/></audio>');
+        $('audio#sound')[0].play();
+        alert("Try again!")
     }
 })
 
@@ -31,6 +34,4 @@ function konamiCodeUnlocked(){
     alert("you have 30 lives");
     $('body').css('background-color', '#006e90')
     $('.container').prepend('<img class="w-100" id="konamiCode" src="img/konami_code_hero_fixed.webp" />');
-    $('#evil-laugh').prepend('<audio id="sound"><source src="audio/laugh.wav" type="audio/mpeg"/></audio>');
-    $('audio#sound')[0].play();
 }
