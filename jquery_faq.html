@@ -14,7 +14,7 @@
 	<p>Frequently asked questions about nation parks</p>
 	
 	<div class="container">
-		<button>show faq</button>
+		<button id="faq">show faq</button>
 		<dl>
 			<dt>Who is the director of the National Park Service?</dt>
 			<dd class="invisible">Charles F. "Chuck" Sams III is the Director of the National Park Service.</dd>
@@ -71,17 +71,58 @@
 			</dd>
 		</dl>
 	</div>
+	<div>
+		<button id="facts">highlight last fact</button>
+		<h3>Yellowstone National Park</h3>
+		<ul class="facts-list">
+			<li class="facts-item">Yellowstone encompasses 3,472 square miles (2,221,766 acres) which makes it larger than Rhode Island and Delaware combined.</li>
+			<li class="facts-item">There are more than 10,000 hydrothermal features in Yellowstone. The four types of thermal features are geysers, hot springs, mud pots, and fumaroles.</li>
+			<li class="facts-item">Yellowstone is home to more than 500 active geysers (more than half the world’s geysers).</li>
+			<li>Yellowstone Lake has 131.7 sq. miles of surface area and 141 miles of shoreline. It is the largest high elevation lake in North America.</li>
+		</ul>
+		<h3>Great Smokey Mountains National Park</h3>
+		<ul class="facts-list">
+			<li class="facts-item">No Entrance Fee to the National Park</li>
+			<li class="facts-item">Most Visited National Park in the United States</li>
+			<li class="facts-item">Salamander Capital of the World</li>
+			<li class="facts-item">More than 800 Miles of Hiking Trails</li>
+		</ul>
+		<h3>Grand Canyon National Park</h3>
+		<ul class="facts-list">
+			<li class="facts-item">The Grand Canyon is bigger than the state of Rhode Island</li>
+			<li class="facts-item">The Grand Canyon itself can influence the weather</li>
+			<li class="facts-item">Tucked within the Grand Canyon are an estimated 1,000 caves</li>
+			<li class="facts-item">The Grand Canyon was carved over some 6 million years</li>
+		</ul>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.6.1.js"
 	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 	<script>
-	$('button').click(function(){
+	$('#faq').click(function(){
 		$("dd").toggleClass("invisible");
 	})
 	
-	function highlight(){
+	function highlightFaq(){
 		$(this).css("background-color", "yellow");
 	}
-	$('dt').click(highlight);
+	$('dt').click(highlightFaq);
+	
+	function highlightFacts(){
+		$('ul li:last-child').css("background-color", "yellow")
+	}
+	
+	$('#facts').click(highlightFacts);
+	
+	function boldFont(){
+		$(this).next().css('font-weight', 'bold')
+	}
+	$('h3').click(boldFont)
+	
+	function turnBlue(){
+		$(this).parent().children().first().css('color', 'blue')
+	}
+	let listItem = $('li');
+	listItem.click(turnBlue);
 	</script>
 </body>
 </html>
