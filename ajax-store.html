@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Store</title>
+</head>
+<body>
+
+<h1>My Tool Store</h1>
+
+<table id="products">
+    <thead>
+        <tr id="content">
+            <th class = "content">Title</th>
+            <th class = "content">Quantity</th>
+            <th class = "content">Price</th>
+            <th class = "content">Categories</th>
+        </tr>
+    </thead>
+    <tbody id="insertProducts"></tbody>
+</table>
+	<button type="button" id="refresh">Refresh List</button>
+	
+	<br>
+	<h1>Update tool list</h1>
+	<form>
+		<label for="tool">Name of tool</label>
+		<input type="text" name="tool" id="tool">
+		
+		<br>
+		<label for="Quantity">quantity</label>
+		<input type="text" name="quantity" id="quantity">
+		
+		<br>
+		<label for="price">Price</label>
+		<input type="text" name="price" id="price">
+		
+		<br>
+		<label for="categories">Category</label>
+		<input type="text" name="quantity" id="categories">
+		
+		<button type="button" id="submitNew">Submit</button>
+		
+	</form>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+<script>
+
+(function() {
+    "use strict";
+	let innerHTML = "";
+    // TODO: Create an AJAX GET request for the file under data/inventory.json
+	function loadList(){
+		$.ajax("data/inventory.json").done(function(data, status){
+			console.log(status);
+			
+			data.forEach(function(tool){
+				
+				innerHTML += `<tr><td>${tool.title}</td><td>${tool.quantity}</td><td>${tool.price}</td><td>${tool.categories}</td></tr>`
+			})
+			$("#insertProducts").html(innerHTML);
+		})
+	}
+	$.ajax("data/inventory.json").done(function(data, status){
+		console.log(status);
+		
+		data.forEach(function(tool){
+			
+			innerHTML += `<tr><td>${tool.title}</td><td>${tool.quantity}</td><td>${tool.price}</td><td>${tool.categories}</td></tr>`
+		})
+		$("#insertProducts").html(innerHTML);
+	})
+    // TODO: Take the data from inventory.json and append it to the products table
+    //       HINT: Your data should come back as a JSON object; use console.log() to inspect
+    //             its contents and fields
+    //       HINT: You will want to target #insertProducts for your new HTML elements
+	
+	$('#submitNew').click(function (){
+		let myObj = {
+			title: $("#title").val(),
+			quantity: parseInt($('#quantity').val()),
+			price: parseInt($("#price").val()),
+			categories: $("#categories")
+		}
+		
+		$.ajax({
+			url: "data/inventory.json:",
+			method: "post",
+			dataType: "jsonp",
+			data: myObj
+		}).done(function (data, success){
+			console.log(data);
+			console.log(success)
+		})
+	})
+	$('#refresh').click(loadList);
+	
+})();
+</script>
+
+</body>
+</html>
