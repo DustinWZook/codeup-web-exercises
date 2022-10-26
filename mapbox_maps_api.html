@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MapBox</title>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+	<style>
+		#map {
+			width: 100%;
+			height: 500px;
+		}
+	</style>
+</head>
+<body>
+	
+	<div id="map"></div>
+	<button type="button" id="zoomOut">Zoom Out</button>
+	<button type="button" id="middleZoom">Middle Zoom</button>
+	<button type="button" id="zoomIn">Zoom In</button>
+	
+	
+	
+	
+	<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+	<script src="js/mapbox-geocoder-utils.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.1.js"
+	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+	<script>
+		const key = "pk.eyJ1IjoiZHVzdGlud3pvb2siLCJhIjoiY2w5bjhhdmxoMDVocDNwcG5ncWo0d3V2YyJ9.jStl532woPOIyiTJ9hE1nw";
+		let favRestaurants = [
+			{
+				name: "Catfish House",
+				lngLat: [-87.38540337263305, 36.50817535134593],
+				info: "<p>Catfish House</p>" +
+						"<p>1461 Zinc Plant Rd, Clarksville, TN 37040</p>"
+			},
+			{
+				name: "liberty Park Grill",
+				lngLat: [-87.36863176126016, 36.51389598722102],
+				info: "<p>Liberty Park Grill</p>" +
+						"<p>125 Marina Wy, Clarksville, TN 37040</p>"
+			},
+			{
+				name: "Edwards Steakhouse",
+				lngLat: [-87.35901872492246, 36.53210540972536],
+				info: "<p>Edwards Steakhouse</p>" +
+						"<p>107 Franklin St, Clarksville, TN 37040</p>"
+			}]
+		mapboxgl.accessToken = key;
+		var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mapbox/streets-v9',
+			zoom: 12,
+			center: [-87.38540337263305, 36.50817535134593]
+		});
+		
+		// let marker = new mapboxgl.Marker()
+		// 		.setLngLat([-87.38540337263305, 36.50817535134593])
+		// 		.setPopup(new mapboxgl.Popup().setHTML("<p>Catfish House</p>" +
+		// 				"<p>1461 Zinc Plant Rd, Clarksville, TN 37040</p>"))
+		// 		.addTo(map);
+		console.log(favRestaurants);
+		favRestaurants.forEach((restaurant) => {
+			new mapboxgl.Marker()
+					.setLngLat(restaurant.lngLat)
+					.setPopup(new mapboxgl.Popup().setHTML(restaurant.info))
+					.togglePopup()
+					.addTo(map);
+		});
+		
+		
+		
+		$("#zoomOut").click(function () {
+			map.setZoom(5);
+		})
+		$("#middleZoom").click(function () {
+			map.setZoom(15);
+		})
+		$("#zoomIn").click(function () {
+			map.setZoom(20);
+		})
+		
+		
+	
+	</script>
+</body>
+</html>
