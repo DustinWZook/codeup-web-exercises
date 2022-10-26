@@ -3,34 +3,39 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Weather</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+	      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
 </head>
 <body>
-<!--	<h1>Weather</h1>-->
-<!--	<input type="text" id="searchBox" placeholder="enter a location">-->
-<!--	<button type="button" id="searchButton">Search</button>-->
+	<!--	<h1>Weather</h1>-->
+	<!--	<input type="text" id="searchBox" placeholder="enter a location">-->
+	<!--	<button type="button" id="searchButton">Search</button>-->
 	
-<!--	<div id="current">-->
-<!--		<p id="main"></p>-->
-<!--	</div>-->
-	
-	<div class="card text-center" style="width: 18rem;">
-		<div class="card-body">
-			<h5 class="card-title">Current Weather Forecast</h5>
-			<h6 class="card-subtitle mb-2 text-muted" id="currentCity">current city</h6>
-			<p class="card-text" id="currentTempMax">max temp</p>
-			<p class="card-text" id="currentTempMin">min temp</p>
-			<p class="card-text" id="currentFeelsLike">feels like temp</p>
-			<p class="card-text" id="currentWind">wind</p>
-			<p class="card-text" id="currentHumidity">humidity</p>
-			<p class="card-text" id="currentConditions">conditions</p>
-			
+	<!--	<div id="current">-->
+	<!--		<p id="main"></p>-->
+	<!--	</div>-->
+	<section class="container">
+		<div class="card text-center" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">Current Weather Forecast</h5>
+				<h6 class="card-subtitle mb-2 text-muted" id="currentCity">current city</h6>
+				<p class="card-text" id="currentDate">date</p>
+				<p class="card-text" id="currentTempMax">max temp</p>
+				<p class="card-text" id="currentTempMin">min temp</p>
+				<p class="card-text" id="currentFeelsLike">feels like temp</p>
+				<p class="card-text" id="currentWind">wind</p>
+				<p class="card-text" id="currentHumidity">humidity</p>
+				<p class="card-text" id="currentConditions">conditions</p>
+			</div>
 		</div>
-	</div>
+	</section>
+	<section class="container" id="forecastContainer">
+	</section>
 	
-	
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+	        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+	        crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.1.js"
 	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 	<script src="js/keys.js"></script>
@@ -40,26 +45,87 @@
 		console.log(owKey);
 		
 		
-		
-		$.ajax(`https://api.openweathermap.org/data/2.5/weather?q=${myLocation}&appid=${owKey}&units=imperial`).done(function (data){
+		$.ajax(`https://api.openweathermap.org/data/2.5/weather?q=${myLocation}&appid=${owKey}&units=imperial`).done(function (data) {
 			console.log(data);
-			let currentCity = data.name
-			let maxTemp = "Max Temp: "+data.main.temp_max+"&deg";
-			let minTemp = "Min Temp: "+data.main.temp_min+"&deg";
-			let feelsLike = "Feels Like: "+data.main.feels_like+"&deg";
-			let wind = "Wind Speed: "+data.wind.speed+" MPH";
-			let humidity = "Humidity: "+data.main.humidity+" %";
-			let condition = "Condition: "+data.weather[0].description;
+			let city = data.name
+			let date = "Date: " + new Date(data.dt * 1000.0).toDateString()
+			let maxTemp = "Max Temp: " + data.main.temp_max + "&deg";
+			let minTemp = "Min Temp: " + data.main.temp_min + "&deg";
+			let feelsLike = "Feels Like: " + data.main.feels_like + "&deg";
+			let wind = "Wind Speed: " + data.wind.speed + " MPH";
+			let humidity = "Humidity: " + data.main.humidity + " %";
+			let condition = "Condition: " + data.weather[0].description;
 			
-			$("#currentCity").html(currentCity);
+			$("#currentCity").html(city);
+			$("#currentDate").html(date);
 			$("#currentTempMax").html(maxTemp);
 			$("#currentTempMin").html(minTemp);
 			$("#currentFeelsLike").html(feelsLike);
 			$("#currentWind").html(wind);
 			$("#currentHumidity").html(humidity);
 			$("#currentConditions").html(condition);
+			
+			
 		})
 		
+		$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${myLocation}&units=imperial&appid=${owKey}`).done(function (data) {
+			console.log(data)
+			
+			//forEach to loop data.list
+			//forEach list find dt
+			//if dt = certain time console.log
+			data.list.forEach((value) => {
+						let unixTimeStamp = value.dt;
+						let dateObj = new Date(unixTimeStamp * 1000);
+						let utcString = dateObj.toUTCString();
+						let time = utcString.slice(-11, -7);
+						// console.log(time);
+						if (time == "2:00") {
+							console.log(value)
+							let city = data.city.name
+							let date = "Date: " + dateObj.toDateString();
+							let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
+							let minTemp = "Min Temp: " + value.main.temp_min + "&deg";
+							let feelsLike = "Feels Like: " + value.main.feels_like + "&deg";
+							let wind = "Wind Speed: " + value.wind.speed + " MPH";
+							let humidity = "Humidity: " + value.main.humidity + " %";
+							let condition = "Condition: " + value.weather[0].description;
+							
+							$("#forecastContainer").append(`
+							<div class="card text-center" style="width: 18rem;" >
+								<div class="card-body" >
+									<h5 class="card-title">5 Day Weather Forecast</h5>
+									<h6 class="card-subtitle mb-2 text-muted" id="forecastCity">current city</h6>
+									<p class="card-text">${date}</p>
+									<p class="card-text">${maxTemp}</p>
+									<p class="card-text">${minTemp}</p>
+									<p class="card-text">${feelsLike}</p>
+									<p class="card-text">${wind}</p>
+									<p class="card-text">${humidity}</p>
+									<p class="card-text">${condition}</p>
+								</div>
+							</div>
+							`)
+							
+							$("#forecastCity").html(city);
+							$("#forecastDate").html(date);
+							$("#forecastTempMax").html(maxTemp);
+							$("#forecastTempMin").html(minTemp);
+							$("#forecastFeelsLike").html(feelsLike);
+							$("#forecastWind").html(wind);
+							$("#forecastHumidity").html(humidity);
+							$("#forecastConditions").html(condition);
+						}
+					}
+			)
+			
+			
+		});
+		// lon: -87.3595, lat: 36.5298
+		// $.ajax(`https://api.openweathermap.org/data/2.5/onecall?lat=36.5298&lon=-87.3595&cnt=5&exclude=current,hourly,minutely,alerts&units=imperial&appid=${owKey}`).done(function(data){
+		// 	console.log(data)
+		// })
+	
 	</script>
 </body>
 </html>
