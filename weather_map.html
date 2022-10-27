@@ -5,7 +5,14 @@
 	<title>Weather</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
 	      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-
+	<link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+	<style>
+		#map {
+			width: 75%;
+			height: 500px;
+		}
+	
+	</style>
 </head>
 <body>
 	<!--	<h1>Weather</h1>-->
@@ -16,7 +23,7 @@
 	<!--		<p id="main"></p>-->
 	<!--	</div>-->
 	<section class="container">
-		<div class="card text-center" style="width: 18rem;">
+		<div class="card text-center w-100" style="width: 18rem;">
 			<div class="card-body">
 				<h5 class="card-title">Current Weather Forecast</h5>
 				<h6 class="card-subtitle mb-2 text-muted" id="currentCity">current city</h6>
@@ -31,95 +38,126 @@
 			</div>
 		</div>
 	</section>
-	<section class="container" id="forecastContainer">
+	<section class="container d-flex" id="forecastContainer">
 	</section>
-<!--	carousel id like to incorporate for 5 day forecast-->
-<!--	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">-->
-<!--		<div class="carousel-inner">-->
-<!--			<div class="carousel-item active">-->
-<!--				<img src="assets/images/google-search.jpg" class="d-block w-100" alt="...">-->
-<!--			</div>-->
-<!--			<div class="carousel-item">-->
-<!--				<img src="assets/images/apple-ipad.jpg" class="d-block w-100" alt="...">-->
-<!--			</div>-->
-<!--			<div class="carousel-item">-->
-<!--				<img src="assets/images/head.jpg" class="d-block w-100" alt="...">-->
-<!--			</div>-->
-<!--		</div>-->
-<!--		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">-->
-<!--			<span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--			<span class="visually-hidden">Previous</span>-->
-<!--		</button>-->
-<!--		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">-->
-<!--			<span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--			<span class="visually-hidden">Next</span>-->
-<!--		</button>-->
-<!--	</div>-->
-	
+	<br>
+	<br>
+	<!--	carousel id like to incorporate for 5 day forecast-->
+	<!--	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">-->
+	<!--		<div class="carousel-inner">-->
+	<!--			<div class="carousel-item active">-->
+	<!--				<img src="assets/images/google-search.jpg" class="d-block w-100" alt="...">-->
+	<!--			</div>-->
+	<!--			<div class="carousel-item">-->
+	<!--				<img src="assets/images/apple-ipad.jpg" class="d-block w-100" alt="...">-->
+	<!--			</div>-->
+	<!--			<div class="carousel-item">-->
+	<!--				<img src="assets/images/head.jpg" class="d-block w-100" alt="...">-->
+	<!--			</div>-->
+	<!--		</div>-->
+	<!--		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">-->
+	<!--			<span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+	<!--			<span class="visually-hidden">Previous</span>-->
+	<!--		</button>-->
+	<!--		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">-->
+	<!--			<span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+	<!--			<span class="visually-hidden">Next</span>-->
+	<!--		</button>-->
+	<!--	</div>-->
+	<div class="m-auto" id="map"></div>
+	<br>
+	<br>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 	        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	        crossorigin="anonymous"></script>
+	<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+	<script src="js/mapbox-geocoder-utils.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.1.js"
 	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 	<script src="js/keys.js"></script>
 	<script>
 		
 		let myLocation = "clarksville"
-		console.log(owKey);
+		// console.log(owKey);
 		
+		mapboxgl.accessToken = mapboxkey;
+		let map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mapbox/streets-v9',
+			zoom: 8,
+			center: [-87.3595, 36.5298]
+		});
+		//lat: 36.5298, lon: -87.3595
+		let userMarker = new mapboxgl.Marker()
+		let userPopup = new mapboxgl.Popup().setHTML(`<h3>users marker</h3>`);
+		let userLocation;
+		map.on("click", (e) => {
+			userLocation = e.lngLat;
+			userMarker
+					.setLngLat(e.lngLat)
+					.setPopup(userPopup)
+					.addTo(map);
+			// console.log(e.lngLat);
+			// console.log(userMarker._lngLat);
+			let userLocationString = reverseGeocode(userLocation, mapboxkey);
+			// currentWeather('las vegas')
+		});
 		
-		$.ajax(`https://api.openweathermap.org/data/2.5/weather?q=${myLocation}&appid=${owKey}&units=imperial`).done(function (data) {
-			console.log(data);
-			let city = data.name
-			let date = "Date: " + new Date(data.dt * 1000.0).toDateString()
-			let maxTemp = "Max Temp: " + data.main.temp_max + "&deg";
-			let minTemp = "Min Temp: " + data.main.temp_min + "&deg";
-			let feelsLike = "Feels Like: " + data.main.feels_like + "&deg";
-			let wind = "Wind Speed: " + data.wind.speed + " MPH";
-			let humidity = "Humidity: " + data.main.humidity + " %";
-			let condition = "Condition: " + data.weather[0].description;
-			let icon = "https://openweathermap.org/img/wn/"+data.weather[0].icon+".png";
-			console.log(icon)
-			$("#currentCity").html(city);
-			$("#currentDate").html(date);
-			$("#currentTempMax").html(maxTemp);
-			$("#currentTempMin").html(minTemp);
-			$("#currentFeelsLike").html(feelsLike);
-			$("#currentWind").html(wind);
-			$("#currentHumidity").html(humidity);
-			$("#currentConditions").html(condition);
-			$("#currentIcon").append(`<img src=${icon}>`)
-			
-			
-		})
+		// console.log(userLocation)
 		
-		$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${myLocation}&units=imperial&appid=${owKey}`).done(function (data) {
-			console.log(data)
-			
-			//forEach to loop data.list
-			//forEach list find dt
-			//if dt = certain time console.log
-			data.list.forEach((value) => {
-						let unixTimeStamp = value.dt;
-						let dateObj = new Date(unixTimeStamp * 1000);
-						let utcString = dateObj.toUTCString();
-						let time = utcString.slice(-11, -7);
+		//wrap each location in function and call on it when page loads
+		//call function again when click event on page
+		//get location to string from coords
+		//place in value as myLocation
+		$(document).ready(currentWeather(myLocation))
+		function currentWeather(location){
+			$.ajax(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${owKey}&units=imperial`).done(function (data) {
+				// console.log(data);
+				let city = data.name
+				let date = "Date: " + new Date(data.dt * 1000.0).toDateString()
+				let maxTemp = "Max Temp: " + data.main.temp_max + "&deg";
+				let minTemp = "Min Temp: " + data.main.temp_min + "&deg";
+				let feelsLike = "Feels Like: " + data.main.feels_like + "&deg";
+				let wind = "Wind Speed: " + data.wind.speed + " MPH";
+				let humidity = "Humidity: " + data.main.humidity + " %";
+				let condition = "Condition: " + data.weather[0].description;
+				let icon = "https://openweathermap.org/img/wn/" + data.weather[0].icon + ".png";
+				// console.log(icon)
+				$("#currentCity").html(city);
+				$("#currentDate").html(date);
+				$("#currentTempMax").html(maxTemp);
+				$("#currentTempMin").html(minTemp);
+				$("#currentFeelsLike").html(feelsLike);
+				$("#currentWind").html(wind);
+				$("#currentHumidity").html(humidity);
+				$("#currentConditions").html(condition);
+				$("#currentIcon").append(`<img src=${icon}>`)
+			})
+		}
+		
+		$(document).ready(forecastWeather(myLocation))
+		function forecastWeather(location){
+			$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=imperial&appid=${owKey}`).done(function (data) {
+				data.list.forEach((value) => {
+					let unixTimeStamp = value.dt;
+					let dateObj = new Date(unixTimeStamp * 1000);
+					let utcString = dateObj.toUTCString();
+					let time = utcString.slice(-11, -7);
+					
+					if (time == "8:00") {
+						// console.log(value)
+						let city = data.city.name
+						let date = "Date: " + dateObj.toDateString();
+						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
+						let minTemp = "Min Temp: " + value.main.temp_min + "&deg";
+						let feelsLike = "Feels Like: " + value.main.feels_like + "&deg";
+						let wind = "Wind Speed: " + value.wind.speed + " MPH";
+						let humidity = "Humidity: " + value.main.humidity + " %";
+						let condition = "Condition: " + value.weather[0].description;
+						let icon = "https://openweathermap.org/img/wn/" + value.weather[0].icon + ".png";
 						
-						// console.log(time);
-						if (time == "8:00") {
-							console.log(value)
-							let city = data.city.name
-							let date = "Date: " + dateObj.toDateString();
-							let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
-							let minTemp = "Min Temp: " + value.main.temp_min + "&deg";
-							let feelsLike = "Feels Like: " + value.main.feels_like + "&deg";
-							let wind = "Wind Speed: " + value.wind.speed + " MPH";
-							let humidity = "Humidity: " + value.main.humidity + " %";
-							let condition = "Condition: " + value.weather[0].description;
-							let icon = "https://openweathermap.org/img/wn/"+value.weather[0].icon+".png";
-							
-							
-							$("#forecastContainer").append(`
+						
+						$("#forecastContainer").append(`
 							<div class="card text-center" style="width: 18rem;" >
 								<div class="card-body" >
 									<h5 class="card-title">5 Day Weather Forecast</h5>
@@ -135,26 +173,11 @@
 								</div>
 							</div>
 							`)
-							
-							// $("#forecastCity").html(city);
-							// $("#forecastDate").html(date);
-							// $("#forecastTempMax").html(maxTemp);
-							// $("#forecastTempMin").html(minTemp);
-							// $("#forecastFeelsLike").html(feelsLike);
-							// $("#forecastWind").html(wind);
-							// $("#forecastHumidity").html(humidity);
-							// $("#forecastConditions").html(condition);
-							// $("#forecastIcon").append(`<img src=${icon}>`)
-						}
 					}
-			)
-			
-			
-		});
-		// lon: -87.3595, lat: 36.5298
-		// $.ajax(`https://api.openweathermap.org/data/2.5/onecall?lat=36.5298&lon=-87.3595&cnt=5&exclude=current,hourly,minutely,alerts&units=imperial&appid=${owKey}`).done(function(data){
-		// 	console.log(data)
-		// })
+				})
+			});
+		}
+		
 	
 	</script>
 </body>
