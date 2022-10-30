@@ -39,21 +39,31 @@
 		</div>
 	</section>
 	<section class="container d-flex" id="forecastContainer">
-<!--		<div class="card text-center" style="width: 18rem;">-->
-			<!--			<div class="card-body" >-->
-			<!--				<h5 class="card-title">5 Day Weather Forecast</h5>-->
-			<!--				<h6 class="card-subtitle mb-2 text-muted" id="forecastCity">${city}</h6>-->
-			<!--				<p class="card-text">${date}</p>-->
-			<!--				<p class="card-text">${maxTemp}</p>-->
-			<!--				<p class="card-text">${minTemp}</p>-->
-			<!--				<p class="card-text">${feelsLike}</p>-->
-			<!--				<p class="card-text">${wind}</p>-->
-			<!--				<p class="card-text">${humidity}</p>-->
-			<!--				<p class="card-text">${condition}</p>-->
-			<!--				<p class="card-text"><img src='${icon}'></p>-->
-			<!--			</div>-->
-<!--		</div>-->
+		<!--		<div class="card text-center" style="width: 18rem;">-->
+		<!--			<div class="card-body" >-->
+		<!--				<h5 class="card-title">5 Day Weather Forecast</h5>-->
+		<!--				<h6 class="card-subtitle mb-2 text-muted" id="forecastCity">${city}</h6>-->
+		<!--				<p class="card-text">${date}</p>-->
+		<!--				<p class="card-text">${maxTemp}</p>-->
+		<!--				<p class="card-text">${minTemp}</p>-->
+		<!--				<p class="card-text">${feelsLike}</p>-->
+		<!--				<p class="card-text">${wind}</p>-->
+		<!--				<p class="card-text">${humidity}</p>-->
+		<!--				<p class="card-text">${condition}</p>-->
+		<!--				<p class="card-text"><img src='${icon}'></p>-->
+		<!--			</div>-->
+		<!--		</div>-->
 	</section>
+	<section class="container">
+		<div class="input-group  mb-3">
+			<span class="input-group-text" id="inputGroup-sizing-default">Enter a City</span>
+			<input type="text" class="form-control width-80" aria-label="Sizing example input"
+			       aria-describedby="inputGroup-sizing-default">
+			<button class="input-group-text" id="userLocationSearch">Search</button>
+		</div>
+	
+	</section>
+	
 	<br>
 	<br>
 	<!--	carousel id like to incorporate for 5 day forecast-->
@@ -78,8 +88,12 @@
 	<!--			<span class="visually-hidden">Next</span>-->
 	<!--		</button>-->
 	<!--	</div>-->
+	
+	<!--	docs said to place here-->
 	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+	<link rel="stylesheet"
+	      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+	      type="text/css">
 	
 	<div class="m-auto" id="map"></div>
 	
@@ -108,17 +122,16 @@
 			center: [-87.3595, 36.5298]
 		});
 		
-		map.addControl(
-				new MapboxGeocoder({
-					accessToken: mapboxgl.accessToken,
-					mapboxgl: mapboxgl
-				})
-		);
-		
 		//lat: 36.5298, lon: -87.3595
 		let userMarker = new mapboxgl.Marker()
 		let userPopup = new mapboxgl.Popup().setHTML(`<h3>users marker</h3>`);
 		let userLocation;
+		$('#userLocationSearch').click(function (){
+			userLocation =
+		})
+		
+		
+		
 		map.on("click", (e) => {
 			userLocation = e.lngLat;
 			userMarker
@@ -194,7 +207,7 @@
 					let time = utcString.slice(-11, -7);
 					
 					if (time == "8:00") {
-						console.log(value)
+						// console.log(value)
 						let city = data.city.name
 						let date = "Date: " + dateObj.toDateString();
 						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
@@ -237,7 +250,7 @@
 					let time = utcString.slice(-11, -7);
 					
 					if (time == "8:00") {
-						console.log(value)
+						// console.log(value)
 						let city = data.city.name
 						let date = "Date: " + dateObj.toDateString();
 						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
