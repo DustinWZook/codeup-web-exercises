@@ -48,6 +48,6 @@ function reverseGeocode(coordinates, token) {
         })
         // to get all the data from the request, comment out the following three lines...
         .then(function(data) {
-            return data.features[0].place_name;
+            return data.features[0].context[1].text;
         });
 }

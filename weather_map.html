@@ -71,6 +71,8 @@
 	        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	        crossorigin="anonymous"></script>
 	<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+<!--	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"></script>-->
+<!--	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>-->
 	<script src="js/mapbox-geocoder-utils.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.1.js"
 	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
@@ -97,12 +99,28 @@
 					.setLngLat(e.lngLat)
 					.setPopup(userPopup)
 					.addTo(map);
-			// console.log(e.lngLat);
-			// console.log(userMarker._lngLat);
-			let userLocationString = reverseGeocode(userLocation, mapboxkey);
-			// currentWeather('las vegas')
+			reverseGeocode(userLocation, mapboxkey).then(function (data){
+				let userLocationString = data;
+				console.log(userLocationString)
+				currentWeather(userLocationString)
+
+			});
+			// currentWeather
+
 		});
 		
+		// map.on("click", function(ev) {
+		// 	$.get(
+		// 			"https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+		// 			ev.lngLat.lon + "," + ev.lngLat.lat + ".json?access_token=" + mapboxkey,
+		// 			function(data) {
+		// 				console.log(data);
+		// 			}
+		// 	).fail(function(jqXHR, textStatus, errorThrown) {
+		// 		alert("There was an error while geocoding: " + errorThrown);
+		// 	});
+		// });
+		//
 		// console.log(userLocation)
 		
 		//wrap each location in function and call on it when page loads
