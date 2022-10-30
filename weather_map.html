@@ -39,6 +39,20 @@
 		</div>
 	</section>
 	<section class="container d-flex" id="forecastContainer">
+<!--		<div class="card text-center" style="width: 18rem;">-->
+			<!--			<div class="card-body" >-->
+			<!--				<h5 class="card-title">5 Day Weather Forecast</h5>-->
+			<!--				<h6 class="card-subtitle mb-2 text-muted" id="forecastCity">${city}</h6>-->
+			<!--				<p class="card-text">${date}</p>-->
+			<!--				<p class="card-text">${maxTemp}</p>-->
+			<!--				<p class="card-text">${minTemp}</p>-->
+			<!--				<p class="card-text">${feelsLike}</p>-->
+			<!--				<p class="card-text">${wind}</p>-->
+			<!--				<p class="card-text">${humidity}</p>-->
+			<!--				<p class="card-text">${condition}</p>-->
+			<!--				<p class="card-text"><img src='${icon}'></p>-->
+			<!--			</div>-->
+<!--		</div>-->
 	</section>
 	<br>
 	<br>
@@ -65,14 +79,19 @@
 	<!--		</button>-->
 	<!--	</div>-->
 	<div class="m-auto" id="map"></div>
+	<mapbox-search-box
+			access-token="<your access token here>"
+			proximity="0,0"
+	>
+	</mapbox-search-box>
 	<br>
 	<br>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 	        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	        crossorigin="anonymous"></script>
 	<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
-<!--	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"></script>-->
-<!--	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>-->
+	<!--	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"></script>-->
+	<!--	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>-->
 	<script src="js/mapbox-geocoder-utils.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.1.js"
 	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
@@ -89,6 +108,10 @@
 			zoom: 8,
 			center: [-87.3595, 36.5298]
 		});
+		
+		const search = new MapboxSearchBox();
+		search.accessToken = mapboxkey;
+		map.addControl(search);
 		//lat: 36.5298, lon: -87.3595
 		let userMarker = new mapboxgl.Marker()
 		let userPopup = new mapboxgl.Popup().setHTML(`<h3>users marker</h3>`);
@@ -99,14 +122,17 @@
 					.setLngLat(e.lngLat)
 					.setPopup(userPopup)
 					.addTo(map);
-			reverseGeocode(userLocation, mapboxkey).then(function (data){
+			// console.log(e.lngLat);
+			// console.log(userMarker._lngLat);
+			reverseGeocode(userLocation, mapboxkey).then(function (data) {
 				let userLocationString = data;
 				console.log(userLocationString)
 				currentWeather(userLocationString)
-
+				forecastWeatherOnClick(userLocationString)
+				
 			});
 			// currentWeather
-
+			
 		});
 		
 		// map.on("click", function(ev) {
@@ -128,7 +154,8 @@
 		//get location to string from coords
 		//place in value as myLocation
 		$(document).ready(currentWeather(myLocation))
-		function currentWeather(location){
+		
+		function currentWeather(location) {
 			$.ajax(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${owKey}&units=imperial`).done(function (data) {
 				// console.log(data);
 				let city = data.name
@@ -149,12 +176,13 @@
 				$("#currentWind").html(wind);
 				$("#currentHumidity").html(humidity);
 				$("#currentConditions").html(condition);
-				$("#currentIcon").append(`<img src=${icon}>`)
+				$("#currentIcon").html(`<img src=${icon}>`)
 			})
 		}
 		
-		$(document).ready(forecastWeather(myLocation))
-		function forecastWeather(location){
+		$(document).ready(forecastWeatherOnLoad(myLocation))
+		
+		function forecastWeatherOnLoad(location) {
 			$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=imperial&appid=${owKey}`).done(function (data) {
 				data.list.forEach((value) => {
 					let unixTimeStamp = value.dt;
@@ -163,7 +191,7 @@
 					let time = utcString.slice(-11, -7);
 					
 					if (time == "8:00") {
-						// console.log(value)
+						console.log(value)
 						let city = data.city.name
 						let date = "Date: " + dateObj.toDateString();
 						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
@@ -174,8 +202,7 @@
 						let condition = "Condition: " + value.weather[0].description;
 						let icon = "https://openweathermap.org/img/wn/" + value.weather[0].icon + ".png";
 						
-						
-						$("#forecastContainer").append(`
+						let forecastInfo = `
 							<div class="card text-center" style="width: 18rem;" >
 								<div class="card-body" >
 									<h5 class="card-title">5 Day Weather Forecast</h5>
@@ -189,13 +216,57 @@
 									<p class="card-text">${condition}</p>
 									<p class="card-text"><img src='${icon}'></p>
 								</div>
-							</div>
-							`)
+							</div>`
+						$("#forecastContainer").append(forecastInfo)
+						
 					}
 				})
 			});
 		}
 		
+		function forecastWeatherOnClick(location) {
+			$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=imperial&appid=${owKey}`).done(function (data) {
+				$('#forecastContainer').empty()
+				data.list.forEach((value) => {
+					let unixTimeStamp = value.dt;
+					let dateObj = new Date(unixTimeStamp * 1000);
+					let utcString = dateObj.toUTCString();
+					let time = utcString.slice(-11, -7);
+					
+					if (time == "8:00") {
+						console.log(value)
+						let city = data.city.name
+						let date = "Date: " + dateObj.toDateString();
+						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
+						let minTemp = "Min Temp: " + value.main.temp_min + "&deg";
+						let feelsLike = "Feels Like: " + value.main.feels_like + "&deg";
+						let wind = "Wind Speed: " + value.wind.speed + " MPH";
+						let humidity = "Humidity: " + value.main.humidity + " %";
+						let condition = "Condition: " + value.weather[0].description;
+						let icon = "https://openweathermap.org/img/wn/" + value.weather[0].icon + ".png";
+						
+						let forecastInfo = `
+							<div class="card text-center" style="width: 18rem;" >
+								<div class="card-body" >
+									<h5 class="card-title">5 Day Weather Forecast</h5>
+									<h6 class="card-subtitle mb-2 text-muted" id="forecastCity">${city}</h6>
+									<p class="card-text">${date}</p>
+									<p class="card-text">${maxTemp}</p>
+									<p class="card-text">${minTemp}</p>
+									<p class="card-text">${feelsLike}</p>
+									<p class="card-text">${wind}</p>
+									<p class="card-text">${humidity}</p>
+									<p class="card-text">${condition}</p>
+									<p class="card-text"><img src='${icon}'></p>
+								</div>
+							</div>`
+						$("#forecastContainer").append(forecastInfo)
+						
+					}
+				})
+			});
+		}
+	
 	
 	</script>
 </body>
