@@ -78,12 +78,11 @@
 	<!--			<span class="visually-hidden">Next</span>-->
 	<!--		</button>-->
 	<!--	</div>-->
+	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+	
 	<div class="m-auto" id="map"></div>
-	<mapbox-search-box
-			access-token="<your access token here>"
-			proximity="0,0"
-	>
-	</mapbox-search-box>
+	
 	<br>
 	<br>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
@@ -109,9 +108,13 @@
 			center: [-87.3595, 36.5298]
 		});
 		
-		const search = new MapboxSearchBox();
-		search.accessToken = mapboxkey;
-		map.addControl(search);
+		map.addControl(
+				new MapboxGeocoder({
+					accessToken: mapboxgl.accessToken,
+					mapboxgl: mapboxgl
+				})
+		);
+		
 		//lat: 36.5298, lon: -87.3595
 		let userMarker = new mapboxgl.Marker()
 		let userPopup = new mapboxgl.Popup().setHTML(`<h3>users marker</h3>`);
