@@ -6,22 +6,14 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
 	      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 	<link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
-	
-	
+	<link rel="stylesheet"
+	      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+	      type="text/css">
 	<style>
 		#map {
 			width: 75%;
 			height: 500px;
 		}
-	</style>
-</head>
-<body>
-	<!--	docs said to place here-->
-	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-	<link rel="stylesheet"
-	      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-	      type="text/css">
-	<style>
 		.geocoder {
 			position: absolute;
 			z-index: 1;
@@ -30,8 +22,12 @@
 			margin-left: -25%;
 			top: 10px;
 		}
-
+		.mapboxgl-ctrl-geocoder {
+			min-width: 100%;
+		}
 	</style>
+</head>
+<body>
 	<div id="geocoder" class="geocoder"></div>
 	<div class="mt-5 m-auto" id="map"></div>
 	
@@ -81,7 +77,7 @@
 	<!--			<span class="visually-hidden">Next</span>-->
 	<!--		</button>-->
 	<!--	</div>-->
-	
+	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 	        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 	        crossorigin="anonymous"></script>
@@ -91,10 +87,11 @@
 	        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 	<script src="js/keys.js"></script>
 	<script>
-		
+<!--		default location-->
 		let myLocation = "clarksville"
-		
-		mapboxgl.accessToken = mapboxkey;
+
+		//creating map and center
+		mapboxgl.accessToken = mapBoxKey;
 		let map = new mapboxgl.Map({
 			container: 'map',
 			style: 'mapbox://styles/mapbox/streets-v9',
@@ -102,6 +99,7 @@
 			center: [-87.3595, 36.5298]
 		});
 		
+		//creating geocoder for search
 		const geocoder = new MapboxGeocoder({
 			accessToken: mapboxgl.accessToken,
 			mapboxgl: mapboxgl
@@ -110,8 +108,30 @@
 		document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 		console.log(geocoder)
 		
+		//event trying to capture search location
+		map.on('load', () => {
+			map.addSource('single-point', {
+				type: 'geojson',
+				data: {
+					type: 'FeatureCollection',
+					features: []
+				}
+			});
+			
+			
+			// Listen for the `result` event from the Geocoder
+			// `result` event is triggered when a user makes a selection
+			//  Add a marker at the result's coordinates
+			geocoder.on('result', (event) => {
+				map.getSource('single-point').setData(event.result.geometry);
+				console.log(event.result.geometry)
+				// forecastWeatherOnClick(result)
+			});
+		});
+		
+		//setting up variables to use on click event
 		let userMarker = new mapboxgl.Marker()
-		let userPopup = new mapboxgl.Popup().setHTML(`<h3></h3>`);
+		let userPopup = new mapboxgl.Popup().setHTML(`<h3>${myLocation}</h3>`);
 		let userLocation;
 		
 		map.on("click", (e) => {
@@ -121,22 +141,21 @@
 					.setPopup(userPopup)
 					.addTo(map);
 
-			reverseGeocode(userLocation, mapboxkey).then(function (data) {
+			//updated reverse geocode in js/mapbox-geocoder-utils.js to return just the city
+			reverseGeocode(userLocation, mapBoxKey).then(function (data) {
 				let userLocationString = data;
-				console.log(userLocationString)
-				
+				//run functions after map has been clicked on and location has done a reverse geocode
 				currentWeather(userLocationString)
 				forecastWeatherOnClick(userLocationString)
-				
 			});
-			
 		});
 		
+		//as soon as the page loads it will run currentWeather function with my default location being used
+		//will like to use a geolocation in future to update default location
 		$(document).ready(currentWeather(myLocation))
 		
 		function currentWeather(location) {
 			$.ajax(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${owKey}&units=imperial`).done(function (data) {
-
 				let city = data.name
 				let date = "Date: " + new Date(data.dt * 1000.0).toDateString()
 				let maxTemp = "Max Temp: " + data.main.temp_max + "&deg";
@@ -146,7 +165,7 @@
 				let humidity = "Humidity: " + data.main.humidity + " %";
 				let condition = "Condition: " + data.weather[0].description;
 				let icon = "https://openweathermap.org/img/wn/" + data.weather[0].icon + ".png";
-
+				
 				$("#currentCity").html(city);
 				$("#currentDate").html(date);
 				$("#currentTempMax").html(maxTemp);
@@ -159,18 +178,19 @@
 			})
 		}
 		
+		//runs function for default location to post the 5 day forecast on load
 		$(document).ready(forecastWeatherOnLoad(myLocation))
 		
 		function forecastWeatherOnLoad(location) {
 			$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=imperial&appid=${owKey}`).done(function (data) {
+				//data gives me 40 objects of data
 				data.list.forEach((value) => {
 					let unixTimeStamp = value.dt;
 					let dateObj = new Date(unixTimeStamp * 1000);
 					let utcString = dateObj.toUTCString();
 					let time = utcString.slice(-11, -7);
-					
+					//selecting one time for each day
 					if (time == "8:00") {
-						// console.log(value)
 						let city = data.city.name
 						let date = "Date: " + dateObj.toDateString();
 						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
@@ -180,7 +200,6 @@
 						let humidity = "Humidity: " + value.main.humidity + " %";
 						let condition = "Condition: " + value.weather[0].description;
 						let icon = "https://openweathermap.org/img/wn/" + value.weather[0].icon + ".png";
-						
 						let forecastInfo = `
 							<div class="card text-center" style="width: 18rem;" >
 								<div class="card-body" >
@@ -196,8 +215,8 @@
 									<p class="card-text"><img src='${icon}'></p>
 								</div>
 							</div>`
-						$("#forecastContainer").append(forecastInfo)
 						
+						$("#forecastContainer").append(forecastInfo)
 					}
 				})
 			});
@@ -205,7 +224,9 @@
 		
 		function forecastWeatherOnClick(location) {
 			$.ajax(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=imperial&appid=${owKey}`).done(function (data) {
+				
 				$('#forecastContainer').empty()
+				
 				data.list.forEach((value) => {
 					let unixTimeStamp = value.dt;
 					let dateObj = new Date(unixTimeStamp * 1000);
@@ -213,7 +234,6 @@
 					let time = utcString.slice(-11, -7);
 					
 					if (time == "8:00") {
-						// console.log(value)
 						let city = data.city.name
 						let date = "Date: " + dateObj.toDateString();
 						let maxTemp = "Max Temp: " + value.main.temp_max + "&deg";
@@ -239,8 +259,8 @@
 									<p class="card-text"><img src='${icon}'></p>
 								</div>
 							</div>`
-						$("#forecastContainer").append(forecastInfo)
 						
+						$("#forecastContainer").append(forecastInfo)
 					}
 				})
 			});
