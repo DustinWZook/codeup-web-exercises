@@ -69,4 +69,4 @@ console.log(longestEmail)
 let userNames = users.reduce((first, second) => {
     return [...first, second.name]
 }, []).join(", ")
-console.log(userNames)
+console.log(`Your instructors are ${userNames}.`)

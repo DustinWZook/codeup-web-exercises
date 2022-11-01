@@ -53,29 +53,32 @@
 	function loadList(){
 		$.ajax("data/inventory.json").done(function(data, status){
 			console.log(status);
-			
+			$("#insertProducts").empty()
 			data.forEach(function(tool){
 				
 				innerHTML += `<tr><td>${tool.title}</td><td>${tool.quantity}</td><td>${tool.price}</td><td>${tool.categories}</td></tr>`
 			})
-			$("#insertProducts").html(innerHTML);
+			$("#insertProducts").append(innerHTML);
 		})
 	}
-	$.ajax("data/inventory.json").done(function(data, status){
-		console.log(status);
-		
-		data.forEach(function(tool){
-			
-			innerHTML += `<tr><td>${tool.title}</td><td>${tool.quantity}</td><td>${tool.price}</td><td>${tool.categories}</td></tr>`
-		})
-		$("#insertProducts").html(innerHTML);
-	})
+	$(document).ready(loadList())
+	// $.ajax("data/inventory.json").done(function(data, status){
+	// 	console.log(status);
+	//
+	// 	data.forEach(function(tool){
+	//
+	// 		innerHTML += `<tr><td>${tool.title}</td><td>${tool.quantity}</td><td>${tool.price}</td><td>${tool.categories}</td></tr>`
+	// 	})
+	// 	$("#insertProducts").html(innerHTML);
+	// })
+	
+	
     // TODO: Take the data from inventory.json and append it to the products table
     //       HINT: Your data should come back as a JSON object; use console.log() to inspect
     //             its contents and fields
     //       HINT: You will want to target #insertProducts for your new HTML elements
 	
-	$('#submitNew').click(function (){
+	$("#submitNew").click(function (){
 		let myObj = {
 			title: $("#title").val(),
 			quantity: parseInt($('#quantity').val()),
@@ -84,7 +87,7 @@
 		}
 		
 		$.ajax({
-			url: "data/inventory.json:",
+			url: "data/inventory.json",
 			method: "post",
 			dataType: "jsonp",
 			data: myObj
@@ -92,7 +95,17 @@
 			console.log(data);
 			console.log(success)
 		})
+		
+		$.ajax({
+			url: "data/inventory.json",
+			type: "GET",
+			dataType: "jsonp"
+		}).done(function(data){
+			console.log(data)
+		})
 	})
+	
+	
 	$('#refresh').click(loadList);
 	
 })();
